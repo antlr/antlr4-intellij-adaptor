@@ -456,6 +456,24 @@ HintManager.getInstance().showErrorHint(editor, errorDisplayString,
                                         HintManager.ABOVE, flags, timeout);
 ```
 
+## Tool windows
+
+This makes a panel appear in the area where debugger etc.. show up.
+
+```java
+public void createToolWindow() {
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		WichPanel wichPanel = new WichPanel();
+        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+        Content content = contentFactory.createContent(wichPanel, "", false);
+
+        wichWindow = toolWindowManager.registerToolWindow(WICH_WINDOW_ID, true, ToolWindowAnchor.BOTTOM);
+        wichWindow.getContentManager().addContent(content);
+        wichWindow.setIcon(Icons.WICH_FILE);
+	}
+public class WichPanel extends JPanel {...}
+```
+
 ## Documents etc...
 
 ### Get text from current open file
@@ -850,7 +868,7 @@ Shutdown sequence
 
 http://devnet.jetbrains.com/thread/454312?tstart=0
 
-### How to wipe out plugin sandbox
+## How to wipe out plugin sandbox
 
 Kill this: `/Volumes/SSD2/Users/parrt/Library/Caches/IdeaIC12/plugins-sandbox`
 
