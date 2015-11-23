@@ -870,7 +870,16 @@ http://devnet.jetbrains.com/thread/454312?tstart=0
 
 ## How to wipe out plugin sandbox
 
-Kill this: `/Volumes/SSD2/Users/parrt/Library/Caches/IdeaIC12/plugins-sandbox`
+Useful when your plugin won't restart properly even after you have fixed some problems. Kill this: `/Volumes/SSD2/Users/parrt/Library/Caches/IdeaIC12/plugins-sandbox`
+
+```bash
+$ find ~/Library/Caches/ -name '*sandbox*'
+/Users/parrt/Library/Caches//IdeaIC12/plugins-sandbox
+/Users/parrt/Library/Caches//IdeaIC13/plugins-sandbox
+/Users/parrt/Library/Caches//IntelliJIdea12/plugins-sandbox
+/Users/parrt/Library/Caches//IntelliJIdea14/plugins-sandbox
+$ find ~/Library/Caches/ -name '*sandbox*' -exec rm -rf {} \;
+```
 
 ## The Missing API javadoc
 
