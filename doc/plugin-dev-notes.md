@@ -881,6 +881,16 @@ $ find ~/Library/Caches/ -name '*sandbox*'
 $ find ~/Library/Caches/ -name '*sandbox*' -exec rm -rf {} \;
 ```
 
+If your plugin was automatically disabled because it threw a fatal error, you can edit the following file without having to delete your whole `plugins-sandbox` directory:
+
+```bash
+$ cat /Users/parrt/Library/Caches/IdeaIC15/plugins-sandbox/config/disabled_plugins.txt
+...
+org.myplugin.id
+```
+
+Just remove the line containing your plugin ID and all the other settings will remain intact.
+
 ## The Missing API javadoc
 
 ### IElementType
