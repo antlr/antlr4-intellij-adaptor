@@ -78,8 +78,6 @@ public class Trees {
 
 	/** Return true if t is u's parent or a node on path to root from u.
 	 *  Use == not equals().
-	 *
-	 *  @since 4.5.1
 	 */
 	public static boolean isAncestorOf(PsiElement t, PsiElement u) {
 		if ( t==null || u==null || t.getParent()==null ) return false;
@@ -89,6 +87,11 @@ public class Trees {
 			p = p.getParent();
 		}
 		return false;
+	}
+
+	public static ANTLRPsiNodeAdaptor getRoot(PsiElement t) {
+		PsiFile contextOfType = PsiTreeUtil.getContextOfType(t, PsiFile.class);
+		return (ANTLRPsiNodeAdaptor)Trees.getChildren(contextOfType)[0];
 	}
 
 	public static Collection<PsiElement> findAllTokenNodes(PsiElement t, int ttype) {
