@@ -53,7 +53,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Trees {
 	public interface Predicate<T> {
@@ -92,6 +94,18 @@ public class Trees {
 	public static ANTLRPsiNodeAdaptor getRoot(PsiElement t) {
 		PsiFile contextOfType = PsiTreeUtil.getContextOfType(t, PsiFile.class);
 		return (ANTLRPsiNodeAdaptor)Trees.getChildren(contextOfType)[0];
+	}
+
+	/** From collection of nodes, make a map from the text of the node to the
+	 *  node.
+	 */
+	public static Map<String, PsiElement> toMap(Collection<? extends PsiElement> nodes) {
+		HashMap<String,PsiElement> m = new HashMap<>();
+
+		for (PsiElement node : nodes) {
+			m.put(node.getText(), node);
+		}
+		return m;
 	}
 
 	public static Collection<PsiElement> findAllTokenNodes(PsiElement t, int ttype) {
