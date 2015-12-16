@@ -2,6 +2,7 @@ package org.antlr.jetbrains.adaptor.parser;
 
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import org.antlr.jetbrains.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
@@ -92,16 +93,19 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 
 	@Override
 	public void enterEveryRule(ParserRuleContext ctx) {
+		ProgressIndicatorProvider.checkCanceled();
 		markers.push(getBuilder().mark());
 	}
 
 	@Override
 	public void exitEveryRule(ParserRuleContext ctx) {
+		ProgressIndicatorProvider.checkCanceled();
 		PsiBuilder.Marker marker = markers.pop();
 		marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
 	}
 
 	protected void visitTerminalImpl(TerminalNode node) {
+		ProgressIndicatorProvider.checkCanceled();
 		if (node.getSymbol().getType() == Token.EOF) {
 			return;
 		}

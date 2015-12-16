@@ -4,6 +4,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.psi.tree.IElementType;
 import org.antlr.jetbrains.adaptor.lexer.PSITokenSource;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -35,6 +36,8 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 	@NotNull
 	@Override
 	public ASTNode parse(IElementType root, PsiBuilder builder) {
+		ProgressIndicatorProvider.checkCanceled();
+
 		TokenSource source = new PSITokenSource(builder);
 		TokenStream tokens = new CommonTokenStream(source);
 		parser.setTokenStream(tokens);
@@ -56,6 +59,7 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 		PsiBuilder.Marker rootMarker = builder.mark();
 		ParseTreeWalker.DEFAULT.walk(listener, parseTree);
 		while (!builder.eof()) {
+			ProgressIndicatorProvider.checkCanceled();
 			builder.advanceLexer();
 		}
 		rootMarker.done(root);

@@ -2,6 +2,7 @@ package org.antlr.jetbrains.adaptor.lexer;
 
 import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiBuilder;
+import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import com.intellij.openapi.project.Project;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenFactory;
@@ -45,6 +46,8 @@ public class PSITokenSource implements TokenSource {
 	 */
 	@Override
 	public Token nextToken() {
+		ProgressIndicatorProvider.checkCanceled();
+
 		TokenIElementType ideaTType = (TokenIElementType)builder.getTokenType();
 		int type = ideaTType!=null ? ideaTType.getANTLRTokenType() : Token.EOF;
 
