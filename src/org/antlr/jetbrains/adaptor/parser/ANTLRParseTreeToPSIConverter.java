@@ -108,6 +108,12 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	 *
 	 *  This is complicated by errors that occur at EOF but I have
 	 *  modified error strategy to add error nodes for EOF if needed.
+	 *
+	 *  Another complication. During prediction, we might match n
+	 *  tokens and then fail on the n+1 token, leading to NoViableAltException.
+	 *  But, it's offending token is at n+1 not current token where
+	 *  prediction started (which we use to find syntax errors). So,
+	 *  SyntaxError objects return start not offending token in this case.
 	 */
 	public void visitErrorNode(ErrorNode node) {
 		ProgressIndicatorProvider.checkCanceled();

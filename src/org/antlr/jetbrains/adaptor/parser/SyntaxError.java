@@ -1,5 +1,6 @@
 package org.antlr.jetbrains.adaptor.parser;
 
+import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.Token;
@@ -34,6 +35,12 @@ public class SyntaxError {
 	}
 
 	public Token getOffendingSymbol() {
+		if ( e instanceof NoViableAltException ) {
+			// the error node in parse tree will have the start token as bad token
+			// even if many lookahead tokens were matched before failing to find
+			// a viable alt.
+			return ((NoViableAltException) e).getStartToken();
+		}
 		return offendingSymbol;
 	}
 
