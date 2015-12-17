@@ -106,9 +106,6 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 
 	protected void visitTerminalImpl(TerminalNode node) {
 		ProgressIndicatorProvider.checkCanceled();
-		if (node.getSymbol().getType() == Token.EOF) {
-			return;
-		}
 
 		// properly recovers from parse tree alterations due to error recovery efforts
 		while (builder.getCurrentOffset() <= node.getSymbol().getStartIndex()) {
