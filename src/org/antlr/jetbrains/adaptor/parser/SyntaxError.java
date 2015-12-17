@@ -2,19 +2,25 @@ package org.antlr.jetbrains.adaptor.parser;
 
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
 
 /** A syntax error from parsing language of plugin. These are
  *  created by SyntaxErrorListener.
  */
 public class SyntaxError {
 	private final Recognizer<?, ?> recognizer;
-	private final Object offendingSymbol;
+	private final Token offendingSymbol;
 	private final int line;
 	private final int charPositionInLine;
 	private final String message;
 	private final RecognitionException e;
 
-	public SyntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+	public SyntaxError(Recognizer<?, ?> recognizer,
+	                   Token offendingSymbol,
+	                   int line, int charPositionInLine,
+	                   String msg,
+	                   RecognitionException e)
+	{
 		this.recognizer = recognizer;
 		this.offendingSymbol = offendingSymbol;
 		this.line = line;
@@ -27,7 +33,7 @@ public class SyntaxError {
 		return recognizer;
 	}
 
-	public Object getOffendingSymbol() {
+	public Token getOffendingSymbol() {
 		return offendingSymbol;
 	}
 

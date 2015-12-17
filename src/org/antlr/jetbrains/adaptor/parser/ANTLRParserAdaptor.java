@@ -41,6 +41,7 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 		TokenSource source = new PSITokenSource(builder);
 		TokenStream tokens = new CommonTokenStream(source);
 		parser.setTokenStream(tokens);
+		parser.setErrorHandler(new ErrorStrategyAdaptor()); // tweaks missing tokens
 		parser.removeErrorListeners();
 		parser.addErrorListener(new SyntaxErrorListener()); // trap errors
 		ParseTree parseTree = null;
