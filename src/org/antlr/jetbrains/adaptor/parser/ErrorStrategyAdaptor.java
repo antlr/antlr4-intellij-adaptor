@@ -16,7 +16,6 @@ public class ErrorStrategyAdaptor extends DefaultErrorStrategy {
 	protected void consumeUntil(Parser recognizer, IntervalSet set) {
 		Token o = recognizer.getCurrentToken();
 		if ( o.getType()==Token.EOF ) {
-			System.out.println("adding error node for EOF in resync case");
 			recognizer.getRuleContext().addErrorNode(o);
 		}
 		super.consumeUntil(recognizer, set);
