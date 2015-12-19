@@ -2,6 +2,8 @@ package org.antlr.jetbrains.adaptor.parser;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.openapi.progress.ProgressIndicatorProvider;
@@ -63,7 +65,9 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 			ProgressIndicatorProvider.checkCanceled();
 			builder.advanceLexer();
 		}
-		rootMarker.done(root);
+		final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
+		rootMarker.done(parserDefinition.getFileNodeType()); // always create a PsiFile root
+//		rootMarker.done(root);
 		return builder.getTreeBuilt(); // calls the ASTFactory.createComposite() etc...
 	}
 
