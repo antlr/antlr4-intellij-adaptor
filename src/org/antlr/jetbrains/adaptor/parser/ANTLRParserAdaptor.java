@@ -66,7 +66,6 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 			builder.advanceLexer();
 		}
 		final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
-		rootMarker.done(parserDefinition.getFileNodeType()); // always create a PsiFile root
 		// NOTE: parse tree returned from parse will be the usual ANTLR tree
 		// ANTLRParseTreeToPSIConverter will convert that to the analogous jetbrains AST nodes
 		// When parsing an entire file, the root IElementType will be a
