@@ -67,7 +67,19 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 		}
 		final ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
 		rootMarker.done(parserDefinition.getFileNodeType()); // always create a PsiFile root
-//		rootMarker.done(root);
+		// NOTE: parse tree returned from parse will be the usual ANTLR tree
+		// ANTLRParseTreeToPSIConverter will convert that to the analogous jetbrains AST nodes
+		// When parsing an entire file, the root IElementType will be a
+		// IFileElementType. When trying to replace nodes and so on, we get
+		// a dummy root and the type arg is likely an identifier IElementType.
+		// This results in a weird tree that has for example
+		// (ID (expr (primary ID))) with the ID IElementType as a subtree root
+		// as well as the appropriate leaf. The dummy ID root is a CompositeElement
+		// and it appears to be a requirement. When I tried to always make
+		// the root have type IFileElementType, I got an exception that leads me
+		// to believe that rootMarker.done(root) is the appropriate code to
+		// finish the AST.
+		rootMarker.done(root);
 		return builder.getTreeBuilt(); // calls the ASTFactory.createComposite() etc...
 	}
 
