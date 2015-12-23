@@ -211,11 +211,9 @@ public class Trees {
 		return null;
 	}
 
-	public static PsiElement createLeafFromText(Project project, Language language, PsiElement context,
-												String text, IElementType type)
-	{
+	public static PsiElement createLeafFromText(Project project, Language language, String text) {
 		PsiFileFactoryImpl factory = (PsiFileFactoryImpl) PsiFileFactory.getInstance(project);
-		PsiElement el = factory.createElementFromText(text, language, type, context);
+		PsiElement el = factory.createFileFromText(language, text);
 		if ( el==null ) return null;
 		return PsiTreeUtil.getDeepestFirst(el); // forces parsing of file!!
 		// start rule depends on root passed in

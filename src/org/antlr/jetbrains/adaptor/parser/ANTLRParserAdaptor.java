@@ -68,15 +68,13 @@ public abstract class ANTLRParserAdaptor implements PsiParser {
 		// NOTE: parse tree returned from parse will be the usual ANTLR tree
 		// ANTLRParseTreeToPSIConverter will convert that to the analogous jetbrains AST nodes
 		// When parsing an entire file, the root IElementType will be a
-		// IFileElementType. When trying to replace nodes and so on, we get
-		// a dummy root and the type arg is likely an identifier IElementType.
-		// This results in a weird tree that has for example
-		// (ID (expr (primary ID))) with the ID IElementType as a subtree root
-		// as well as the appropriate leaf. The dummy ID root is a CompositeElement
-		// and it appears to be a requirement. When I tried to always make
-		// the root have type IFileElementType, I got an exception that leads me
-		// to believe that rootMarker.done(root) is the appropriate code to
-		// finish the AST.
+		// IFileElementType. When trying to replace nodes and so on, you must
+		// still use PsiFileFactoryImpl.createFileFromText() and then
+		// Make sure that your grammars start rule handles individual elements.
+		// Note that I suspect that jetbrains cannot handle left recursive
+		// rules in all situations so make sure that your start rule is not
+		// left recursive. I have also seen it do weird things when the start
+		// rule calls a left recursive rule.
 		rootMarker.done(root);
 		return builder.getTreeBuilt(); // calls the ASTFactory.createComposite() etc...
 	}
