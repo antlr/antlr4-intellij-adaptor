@@ -91,9 +91,9 @@ public class Trees {
 		return false;
 	}
 
-	public static ANTLRPsiNodeAdaptor getRoot(PsiElement t) {
-		PsiFile contextOfType = PsiTreeUtil.getContextOfType(t, PsiFile.class);
-		return (ANTLRPsiNodeAdaptor)Trees.getChildren(contextOfType)[0];
+	public static ANTLRPsiNode getRoot(PsiElement t) {
+		PsiFile contextOfType = PsiTreeUtil.getParentOfType(t, PsiFile.class);
+		return (ANTLRPsiNode)Trees.getChildren(contextOfType)[0];
 	}
 
 	/** From collection of nodes, make a map from the text of the node to the
@@ -135,8 +135,8 @@ public class Trees {
 				}
 			}
 		}
-		else if ( !findTokens && t instanceof ANTLRPsiNodeAdaptor ) {
-			ANTLRPsiNodeAdaptor ctx = (ANTLRPsiNodeAdaptor)t;
+		else if ( !findTokens && t instanceof ANTLRPsiNode ) {
+			ANTLRPsiNode ctx = (ANTLRPsiNode)t;
 			IElementType elType = ctx.getNode().getElementType();
 			if ( elType instanceof RuleIElementType ) {
 				if ( ((RuleIElementType) elType).getRuleIndex()==index ) nodes.add(t);
@@ -162,6 +162,8 @@ public class Trees {
 	/** Get all non-WS, non-Comment children of t */
 	@NotNull
 	public static PsiElement[] getChildren(PsiElement t) {
+		if ( t==null ) return PsiElement.EMPTY_ARRAY;
+
 		PsiElement psiChild = t.getFirstChild();
 		if (psiChild == null) return PsiElement.EMPTY_ARRAY;
 
