@@ -57,8 +57,8 @@ public abstract class IdentifierDefSubtree extends ANTLRPsiNode implements PsiNa
 	 */
 	@Override
 	public PsiElement setName(@NotNull String name) throws IncorrectOperationException {
-		System.out.println(getClass().getSimpleName()+".setName("+name+") on "+
-			                   this+" at "+Integer.toHexString(this.hashCode()));
+//		System.out.println(getClass().getSimpleName()+".setName("+name+") on "+
+//			                   this+" at "+Integer.toHexString(this.hashCode()));
 		PsiNamedElement idNode = (PsiNamedElement)getNameIdentifier();
 		if ( idNode!=null ) {
 			return idNode.setName(name);

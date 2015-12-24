@@ -3,6 +3,7 @@ package org.antlr.jetbrains.adaptor.psi;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
+import org.antlr.jetbrains.adaptor.SymtabUtils;
 
 /** A leaf node you can use as a superclass for your PSI trees.
  *  You don't have to use it of course, but it gives you basic
@@ -24,10 +25,6 @@ public class ANTLRPsiLeafNode extends LeafPsiElement {
 	 */
 	@Override
 	public PsiElement getContext() {
-		PsiElement parent = getParent();
-		if ( parent instanceof ScopeNode ) {
-			return parent;
-		}
-		return parent.getContext();
+		return SymtabUtils.getContextFor(this);
 	}
 }

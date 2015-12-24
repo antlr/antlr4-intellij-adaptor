@@ -38,4 +38,12 @@ public class SymtabUtils {
 		// must be top scope; no resolution for element
 		return null;
 	}
+
+	public static ScopeNode getContextFor(PsiElement element) {
+		PsiElement parent = element.getParent();
+		if ( parent instanceof ScopeNode ) {
+			return (ScopeNode)parent;
+		}
+		return (ScopeNode)parent.getContext();
+	}
 }

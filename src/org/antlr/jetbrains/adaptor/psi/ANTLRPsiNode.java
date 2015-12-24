@@ -3,6 +3,7 @@ package org.antlr.jetbrains.adaptor.psi;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import org.antlr.jetbrains.adaptor.SymtabUtils;
 import org.antlr.jetbrains.adaptor.lexer.RuleIElementType;
 import org.antlr.jetbrains.adaptor.lexer.TokenIElementType;
 import org.jetbrains.annotations.NotNull;
@@ -49,14 +50,6 @@ public class ANTLRPsiNode extends ASTWrapperPsiElement {
 	 */
 	@Override
 	public ScopeNode getContext() {
-		PsiElement parent = getParent();
-		if ( parent instanceof ScopeNode ) {
-			return (ScopeNode)parent;
-		}
-		return (ScopeNode)parent.getContext();
-//		while ( p!=null && !(p instanceof ScopeNode) ) {
-//			p = p.getParent();
-//		}
-//		return (ScopeNode)p;
+		return SymtabUtils.getContextFor(this);
 	}
 }
