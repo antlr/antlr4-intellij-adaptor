@@ -2,6 +2,7 @@ package org.antlr.jetbrains.adaptor;
 
 import com.intellij.lang.Language;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
 import com.intellij.psi.PsiNamedElement;
 import org.antlr.jetbrains.adaptor.psi.ScopeNode;
 import org.antlr.jetbrains.adaptor.psi.Trees;
@@ -43,6 +44,9 @@ public class SymtabUtils {
 		PsiElement parent = element.getParent();
 		if ( parent instanceof ScopeNode ) {
 			return (ScopeNode)parent;
+		}
+		if ( parent instanceof PsiErrorElement ) {
+			return null;
 		}
 		return (ScopeNode)parent.getContext();
 	}
