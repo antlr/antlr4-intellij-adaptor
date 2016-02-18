@@ -6,7 +6,6 @@ import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.util.IncorrectOperationException;
 import org.antlr.jetbrains.adaptor.psi.ANTLRPsiNode;
-import org.antlr.jetbrains.sample.SampleParserDefinition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,8 +21,15 @@ import org.jetbrains.annotations.Nullable;
  *  for more details.
  */
 public abstract class IdentifierDefSubtree extends ANTLRPsiNode implements PsiNameIdentifierOwner {
-	public IdentifierDefSubtree(@NotNull ASTNode node) {
+	/**
+	 * Gets the {@link IElementType} of the ID/Identifier rule for
+	 * use in {@link #getNameIdentifier}
+	 */
+	private final IElementType idElementType;
+
+	public IdentifierDefSubtree(@NotNull ASTNode node, @NotNull IElementType idElementType) {
 		super(node);
+		this.idElementType = idElementType;
 	}
 
 	@Override
@@ -35,7 +41,7 @@ public abstract class IdentifierDefSubtree extends ANTLRPsiNode implements PsiNa
 	@Nullable
 	@Override
 	public PsiElement getNameIdentifier() {
-		ASTNode idNode = getNode().findChildByType(SampleParserDefinition.ID);
+		ASTNode idNode = getNode().findChildByType(idElementType);
 		if (idNode != null) {
 			return idNode.getPsi();
 		}
