@@ -1,0 +1,89 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "org.jetbrains.intellij" version "0.0.43"
+    id "com.jfrog.bintray" version "1.6"
+}
+
+group = 'org.antlr'
+description = 'Support for using ANTLR-generated parsers/lexers in jetbrains IDE plug-ins.'
+version = "${version}.$buildNumber"
+
+repositories {
+    jcenter()
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.antlr:antlr4-runtime:4.5.1'
+}
+
+apply plugin: 'idea'
+idea {
+    project {
+        jdkName = javaVersion
+        languageLevel = javaVersion
+    }
+    module {
+        generatedSourceDirs += file('gen')
+    }
+}
+
+apply plugin: 'org.jetbrains.intellij'
+intellij {
+    version ideaVersion
+}
+
+apply plugin: 'java'
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) { options.encoding = 'UTF-8' }
+
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        Main(MavenPublication) {
+            from components.java
+            groupId = 'org.antlr'
+            artifactId = 'jetbrains'
+            version = '0.1'
+        }
+    }
+}
+
+// ~/gradle.properties should contain repo credentials:
+// bintrayUser = 'user'
+// bintrayApiKey = 'your-api-key'
+// }
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    publications = ['Main']
+    pkg {
+        repo = 'maven'
+        name = 'jetbrains'
+        userOrg = 'antlr'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/antlr/jetbrains.git'
+        publicDownloadNumbers = true
+        version {
+            name = '0.1'
+            desc = 'Jetbrains-ANTLR support library'
+            released  = new Date()
+            vcsTag = '0.1'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
