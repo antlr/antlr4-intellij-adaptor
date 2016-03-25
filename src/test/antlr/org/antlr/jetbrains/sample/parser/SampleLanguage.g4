@@ -20,7 +20,7 @@ grammar SampleLanguage;
  *  or compilationUnit, etc...
  */
 script
-	:	vardef* function* statement* EOF
+	:	(vardef | function | statement)* EOF
 	;
 
 function
@@ -89,20 +89,7 @@ LBRACK : '[' ;
 RBRACK : ']' ;
 LBRACE : '{' ;
 RBRACE : '}' ;
-IF : 'if' ;
-ELSE : 'else' ;
-WHILE : 'while' ;
-VAR : 'var' ;
 EQUAL : '=' ;
-RETURN : 'return' ;
-PRINT : 'print' ;
-FUNC : 'func' ;
-TYPEINT : 'int' ;
-TYPEFLOAT : 'float' ;
-TYPESTRING : 'string' ;
-TYPEBOOLEAN : 'boolean' ;
-TRUE : 'true' ;
-FALSE : 'false' ;
 SUB : '-' ;
 BANG : '!' ;
 MUL : '*' ;
@@ -117,6 +104,19 @@ GE : '>=' ;
 OR : '||' ;
 AND : '&&' ;
 DOT : ' . ' ;
+IF : 'if' ;
+ELSE : 'else' ;
+WHILE : 'while' ;
+VAR : 'var' ;
+RETURN : 'return' ;
+PRINT : 'print' ;
+FUNC : 'func' ;
+TYPEINT : 'int' ;
+TYPEFLOAT : 'float' ;
+TYPESTRING : 'string' ;
+TYPEBOOLEAN : 'boolean' ;
+TRUE : 'true' ;
+FALSE : 'false' ;
 
 LINE_COMMENT : '//' .*? ('\n'|EOF)	-> channel(HIDDEN) ;
 COMMENT      : '/*' .*? '*/'    	-> channel(HIDDEN) ;

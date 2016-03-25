@@ -34,7 +34,7 @@ public class XPathTest extends ParsingTestCase {
     public void testSingleVarDef() throws Exception {
         String code = "var x = 1";
         String output = code;
-        String xpath = "/script/statement";
+        String xpath = "/script/vardef";
         checkXPathResults(code, xpath, output);
     }
 
@@ -43,7 +43,7 @@ public class XPathTest extends ParsingTestCase {
                 "var x = 1\n" +
                         "var y = [1,2,3]\n";
         String output = code;
-        String xpath = "/script/statement";
+        String xpath = "/script/vardef";
         checkXPathResults(code, xpath, output);
     }
 
@@ -100,7 +100,7 @@ public class XPathTest extends ParsingTestCase {
                         "j\n"+
                         "swap\n"+
                         "x";
-        String xpath = "//block/statement/vardef/ID";
+        String xpath = "//block/vardef/ID";
         checkXPathResults(code, xpath, output);
     }
 
@@ -109,14 +109,13 @@ public class XPathTest extends ParsingTestCase {
         String output =
                 "x\n"+
                         "i";
-        String xpath = "//function/block/statement/vardef/ID";
+        String xpath = "//function/block/vardef/ID";
         checkXPathResults(code, xpath, output);
     }
 
     public void testRuleUnderWildcard() throws Exception {
         String code = loadFile("src/test/resources/test.sample");
         String output =
-                "var y = x\n"+
                         "x\n"+
                         "[\n"+
                         "1\n"+
