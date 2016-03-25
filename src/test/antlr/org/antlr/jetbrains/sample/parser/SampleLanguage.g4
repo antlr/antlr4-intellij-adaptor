@@ -24,61 +24,61 @@ script
 	;
 
 function
-	:	'func' ID '(' formal_args? ')' (':' type)? block
+	:	FUNC ID LPAREN formal_args? RPAREN (COLON type)? block
 	;
 
-formal_args : formal_arg (',' formal_arg)* ;
+formal_args : formal_arg (COMMA formal_arg)* ;
 
-formal_arg : ID ':' type ;
+formal_arg : ID COLON type ;
 
-type:	'int'                                               # IntTypeSpec
-	|	'float'                                             # FloatTypeSpec
-	|	'string'                                            # StringTypeSpec
-	|	'boolean'											# BooleanTypeSpec
-	|	'[' ']'                                             # VectorTypeSpec
+type:	TYPEINT                                              // IntTypeSpec
+	|	TYPEFLOAT                                            // FloatTypeSpec
+	|	TYPESTRING                                           // StringTypeSpec
+	|	TYPEBOOLEAN											 // BooleanTypeSpec
+	|   LBRACK RBRACK                                        // VectorTypeSpec
 	;
 
 block
-	:  '{' (statement|vardef)* '}';
+	:  LBRACE (statement|vardef)* RBRACE;
 
 statement
-	:	'if' '(' expr ')' statement ('else' statement)?		# If
-	|	'while' '(' expr ')' statement						# While
-	|	ID '=' expr											# Assign
-	|	ID '[' expr ']' '=' expr							# ElementAssign
-	|	call_expr											# CallStatement
-	|	'print' '(' expr? ')'								# Print
-	|	'return' expr										# Return
-	|	block				 								# BlockStatement
+	:	IF LPAREN expr RPAREN statement (ELSE statement)?	// If
+	|	WHILE LPAREN expr RPAREN statement					// While
+	|	ID EQUAL expr										// Assign
+	|	ID LBRACK expr RBRACK EQUAL expr				    // ElementAssign
+	|	call_expr											// CallStatement
+	|	PRINT LPAREN expr? RPAREN							// Print
+	|	RETURN expr										    // Return
+	|	block				 								// BlockStatement
 	;
 
-vardef : 'var' ID '=' expr ;
+vardef : VAR ID EQUAL expr ;
 
 expr
-	:	expr operator expr									# Op
-	|	'-' expr											# Negate
-	|	'!' expr											# Not
-	|	call_expr											# Call
-	|	ID '[' expr ']'										# Index
-	|	'(' expr ')'										# Parens
-	|	primary												# Atom
+	:	expr operator expr									// Op
+	|	SUB expr											// Negate
+	|	BANG expr											// Not
+	|	call_expr											// Call
+	|	ID LBRACK expr RBRACK								// Index
+	|	LPAREN expr RPAREN									// Parens
+	|	primary												// Atom
 	;
 
 operator  : MUL|DIV|ADD|SUB|GT|GE|LT|LE|EQUAL_EQUAL|NOT_EQUAL|OR|AND|DOT ; // no implicit precedence
 
 call_expr
-	: ID '(' expr_list? ')' ;
+	: ID LPAREN expr_list? RPAREN ;
 
-expr_list : expr (',' expr)* ;
+expr_list : expr (COMMA expr)* ;
 
 primary
-	:	ID													# Identifier
-	|	INT													# Integer
-	|	FLOAT												# Float
-	|	STRING												# String
-	|	'[' expr_list ']'									# Vector
-	|	'true'												# TrueLiteral
-	|	'false'												# FalseLiteral
+	:	ID													// Identifier
+	|	INT													// Integer
+	|	FLOAT												// Float
+	|	STRING												// String
+	|	LBRACK expr_list RBRACK								// Vector
+	|	TRUE												// TrueLiteral
+	|	FALSE												// FalseLiteral
 	;
 
 LPAREN : '(' ;
