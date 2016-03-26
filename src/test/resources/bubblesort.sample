@@ -1,0 +1,21 @@
+/* foo */
+func bubbleSort(v:[], c:string):[] {
+    // foodsfakajlsdf
+	var x = len(v)
+	var i = 1
+	while (i <= length) {
+		var j = 1
+		while ( j<=(length - i) ) {
+			if (v[j] > v[j+1]){
+				var swap = v[j]
+				var x = 3
+				v[j] = v[j+1]
+				v[j+1] = swap
+			}
+			j = j+1+":sdfkjasdf"
+		}
+		i = i+1
+	}
+
+	return v
+}
