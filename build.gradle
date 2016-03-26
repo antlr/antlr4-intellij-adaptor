@@ -13,7 +13,6 @@ plugins {
 
 group = 'org.antlr'
 description = 'Support for using ANTLR-generated parsers/lexers in jetbrains IDE plug-ins.'
-version = "${version}.$buildNumber"
 
 repositories {
     jcenter()
@@ -56,11 +55,32 @@ publishing {
     publications {
         Main(MavenPublication) {
             from components.java
-            groupId = 'org.antlr'
-            artifactId = 'jetbrains'
-            version = '0.1'
+            artifact sourceJar
+            artifact javadocJar
         }
     }
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
+    tasks.withType(Javadoc) {
+        // disable the crazy super-strict doclint tool in Java 8
+        //noinspection SpellCheckingInspection
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from sourceSets.main.allJava
+    classifier = 'javadoc'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
 }
 
 // ~/gradle.properties should contain repo credentials:
@@ -73,20 +93,17 @@ bintray {
     publications = ['Main']
     pkg {
         repo = 'maven'
-        name = 'jetbrains'
+        name = rootProject.name
         userOrg = 'antlr'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/antlr/jetbrains.git'
         publicDownloadNumbers = true
         version {
-            name = '0.1'
+            name = rootProject.version
             desc = 'Jetbrains-ANTLR support library'
             released  = new Date()
-            vcsTag = '0.1'
+            vcsTag = rootProject.version
         }
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
-}
