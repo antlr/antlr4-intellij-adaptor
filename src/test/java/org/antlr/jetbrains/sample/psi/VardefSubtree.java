@@ -1,7 +1,7 @@
 package org.antlr.jetbrains.sample.psi;
 
 import com.intellij.lang.ASTNode;
-import org.antlr.jetbrains.adaptor.psi.IdentifierDefSubtree;
+import org.antlr.jetbrains.adapter.psi.IdentifierDefSubtree;
 import org.antlr.jetbrains.sample.SampleParserDefinition;
 import org.jetbrains.annotations.NotNull;
 
