@@ -54,3 +54,5 @@ YYYY/MM/DD, github id, Full name, email
 2015/11/09, parrt, Terence Parr, parrt@antlr.org
 2016/02/23, yegorpetrov, Yegor Petrov, petrov.yegor@gmail.com
 2016/03/12, vemilyus, Alexander Katlein, mail@vemilyus.com
+2016/04/01, Filippok, Philipp Mirzayants, filsoftw@gmail.com
+

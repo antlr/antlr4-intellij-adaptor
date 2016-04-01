@@ -48,7 +48,7 @@ public class PSITokenSource implements TokenSource {
 	public Token nextToken() {
 		ProgressIndicatorProvider.checkCanceled();
 
-		TokenIElementType ideaTType = (TokenIElementType)builder.getTokenType();
+		IANTLRTokenBase ideaTType = (IANTLRTokenBase) builder.getTokenType();
 		int type = ideaTType!=null ? ideaTType.getANTLRTokenType() : Token.EOF;
 
 		int channel = Token.DEFAULT_CHANNEL;

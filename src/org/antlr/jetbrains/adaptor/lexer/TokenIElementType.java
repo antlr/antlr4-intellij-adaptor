@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
  *  We differentiate between parse tree subtree roots and tokens with
  *  {@link RuleIElementType} and {@link TokenIElementType}, respectively.
  */
-public class TokenIElementType extends IElementType {
+public class TokenIElementType extends IElementType implements IANTLRTokenBase {
 	private final int antlrTokenType;
 
 	public TokenIElementType(int antlrTokenType,
