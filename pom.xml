@@ -61,7 +61,7 @@ and build the library / artifact.
 						<configuration>
 							<sourceDirectory>src</sourceDirectory>
 						</configuration>
-						<id>antlr2</id>
+						<id>antlr4</id>
 						<goals>
 							<goal>antlr4</goal>
 						</goals>
