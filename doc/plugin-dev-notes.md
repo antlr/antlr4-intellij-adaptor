@@ -667,13 +667,28 @@ int selEnd = editor.getSelectionModel().getSelectionEnd();
 
 ### Get offset from Action event (right click menu)
 
-Seems mouse event appears *after* update() in actionPerformed() however. :) So actionEvent.getInputEvent() will work in actionPerformed().
+Seems mouse event appears *after* update() in actionPerformed(). :) So actionEvent.getInputEvent() will work in actionPerformed().
 
 ```java
 Point mousePosition = editor.getContentComponent().getMousePosition();
 LogicalPosition pos=editor.xyToLogicalPosition(mousePosition);
 int offset = editor.logicalPositionToOffset(pos);
 ```
+
+actually just found right-click menu needing both. i needed this to reliably get position. Upon click, i get two calls to AnAction.update() method. First time, uses LogicalPosition but 2nd time (for single right click) it uses editor caret position.
+
+```java
+int offset;
+Point mousePosition = editor.getContentComponent().getMousePosition();
+if ( mousePosition!=null ) {
+	LogicalPosition pos = editor.xyToLogicalPosition(mousePosition);
+	offset = editor.logicalPositionToOffset(pos);
+}
+else {
+	offset = editor.getCaretModel().getOffset();
+}
+```
+
 
 ### Highlight region of editor text
 
