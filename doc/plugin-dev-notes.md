@@ -667,6 +667,8 @@ int selEnd = editor.getSelectionModel().getSelectionEnd();
 
 ### Get offset from Action event (right click menu)
 
+See [question in form](https://intellij-support.jetbrains.com/hc/en-us/community/posts/207565305-Mystified-by-right-click-editor-popup-psielement-selection?page=1)
+
 Seems mouse event appears *after* update(); only  actionPerformed() sees right clicked caret position correctly. :) So `editor.getCaretModel().getOffset()` will work in actionPerformed() but not update().  In update(), you must use:
 
 ```java
@@ -680,6 +682,19 @@ if ( editor!=null ) {
 		int offset = editor.logicalPositionToOffset(pos);
 		PsiElement el = file.findElementAt(offset);
 	}
+}
+```
+
+ugh. actually, update() is called 3rd time right before actionPerformed but mouse event has occurred now so we need to change update() to test and use
+
+```java
+// in update()
+InputEvent inputEvent = e.getInputEvent();
+if ( inputEvent instanceof MouseEvent ) {
+	// must be the update() call right before actionPerformed use caret offset
+}
+else {
+	// do stuff above (use mouse position)
 }
 ```
 
