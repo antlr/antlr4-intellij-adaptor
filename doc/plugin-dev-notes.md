@@ -716,6 +716,15 @@ RangeHighlighter rangehighlighter=
                                     HighlighterTargetArea.EXACT_RANGE);
 ```
 
+## Caching/associating data with IDE objects
+
+From [UserData lifecycle](https://intellij-support.jetbrains.com/hc/en-us/community/posts/206755575-UserData-lifecycle)
+
+> There is no automatic mechanism that would clear the userdata of a PSI element. Normally it lives as long as the element itself, which for a PsiFile can be the entire IDE usage session.
+> If you need to store a value in UserData that depends on other things (such as the contents of the file itself), you can use CachedValuesManager.createCachedValue() and specify the dependencies for the value.
+
+From [Best way to associate data with a PsiElement?](https://intellij-support.jetbrains.com/hc/en-us/community/posts/206122359-Best-way-to-associate-data-with-a-PsiElement-): "The recommended approach is to put CachedValues (created using CachedValueManager) into the userdata of PsiElements."
+
 ## Actions, intentions, live templates
 
 http://devnet.jetbrains.com/thread/454250
