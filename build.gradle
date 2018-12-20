@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.jetbrains.intellij' version '0.3.12'
+    id 'maven-publish'
+    id 'signing'
+}
+
+wrapper {
+    gradleVersion = '4.10.2'
+}
+
+version pluginVersion
+
+apply plugin: 'java'
+apply plugin: 'org.jetbrains.intellij'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+intellij {
+    version = ideaVersion
+
+    pluginName 'antlr-intellij-adaptor'
+    downloadSources true
+    updateSinceUntilBuild false
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.antlr:antlr4-runtime:$antlr4Version") {
+        exclude group:'com.ibm.icu', module:'icu4j'
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    classifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.antlr'
+            artifactId = 'antlr4-intellij-adaptor'
+            version = pluginVersion
+
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'ANTLRV4 adaptor for IntelliJ-based IDEs'
+                description = 'Support for using ANTLR-generated parsers/lexers in IntelliJ-based IDE plug-ins.'
+                url = 'https://github.com/antlr/jetbrains'
+                licenses {
+                    license {
+                        name = 'BSD 2-Clause "Simplified" License'
+                        url = 'https://github.com/antlr/jetbrains/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'parrt'
+                        name = 'Terence Parr'
+                        email = 'parrt@cs.usfca.edu'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/antlr/jetbrains.git'
+                    developerConnection = 'scm:git:git@github.com:antlr/jetbrains.git'
+                    url = 'https://github.com/antlr/jetbrains'
+                }
+            }
+
+        }
+    }
+}
+
+signing {
+    // TODO reactivate to publish to Maven Central
+//    sign publishing.publications.maven
+}
+
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
