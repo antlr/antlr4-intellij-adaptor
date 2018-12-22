@@ -14,7 +14,8 @@ wrapper {
     gradleVersion = '4.10.2'
 }
 
-version pluginVersion
+group 'org.antlr'
+version libraryVersion
 
 apply plugin: 'java'
 apply plugin: 'org.jetbrains.intellij'
@@ -27,7 +28,7 @@ compileJava {
 intellij {
     version = ideaVersion
 
-    pluginName 'antlr-intellij-adaptor'
+    pluginName 'antlr4-intellij-adaptor'
     downloadSources true
     updateSinceUntilBuild false
 }
@@ -57,7 +58,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'org.antlr'
             artifactId = 'antlr4-intellij-adaptor'
-            version = pluginVersion
+            version = libraryVersion
 
             from components.java
             artifact sourcesJar
@@ -66,11 +67,11 @@ publishing {
             pom {
                 name = 'ANTLRV4 adaptor for IntelliJ-based IDEs'
                 description = 'Support for using ANTLR-generated parsers/lexers in IntelliJ-based IDE plug-ins.'
-                url = 'https://github.com/antlr/jetbrains'
+                url = 'https://github.com/antlr/antlr4-intellij-adaptor'
                 licenses {
                     license {
                         name = 'BSD 2-Clause "Simplified" License'
-                        url = 'https://github.com/antlr/jetbrains/blob/master/LICENSE'
+                        url = 'https://github.com/antlr/antlr4-intellij-adaptor/blob/master/LICENSE'
                     }
                 }
                 developers {
@@ -81,19 +82,27 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/antlr/jetbrains.git'
-                    developerConnection = 'scm:git:git@github.com:antlr/jetbrains.git'
-                    url = 'https://github.com/antlr/jetbrains'
+                    connection = 'scm:git:git://github.com/antlr/antlr4-intellij-adaptor.git'
+                    developerConnection = 'scm:git:git@github.com:antlr/antlr4-intellij-adaptor.git'
+                    url = 'https://github.com/antlr/antlr4-intellij-adaptor'
                 }
             }
 
         }
     }
+    repositories {
+        maven {
+            url "https://oss.sonatype.org/${libraryVersion.contains("-SNAPSHOT") ? 'content/repositories/snapshots' : 'service/local/staging/deploy/maven2'}"
+            credentials {
+                username sonatypeUsername
+                password sonatypePassword
+            }
+        }
+    }
 }
 
 signing {
-    // TODO reactivate to publish to Maven Central
-//    sign publishing.publications.maven
+    sign publishing.publications.maven
 }
 
 
