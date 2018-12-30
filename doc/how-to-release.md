@@ -67,4 +67,5 @@ $ ./gradlew publish
 ## More doc
 
 [Sign and publish on Maven Central a Project with the new maven-publish Gradle plugin](https://medium.com/@nmauti/sign-and-publish-on-maven-central-a-project-with-the-new-maven-publish-gradle-plugin-22a72a4bfd4b)
+
 [Automated Gradle project deployment to Sonatype OSS Repository](http://jedicoder.blogspot.com/2011/11/automated-gradle-project-deployment-to.html)
