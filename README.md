@@ -1,4 +1,4 @@
-# ANTLRv4 support in IntelliJ IDEs
+# ANTLRv4 support in IntelliJ IDEs [![Build Status](https://travis-ci.org/antlr/antlr4-intellij-adaptor.svg?branch=master)](https://travis-ci.org/antlr/antlr4-intellij-adaptor) [![Maven Central](https://img.shields.io/maven-central/v/org.antlr/antlr4-intellij-adaptor.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22org.antlr%22%20AND%20a:%22antlr4-intellij-adaptor%22)
 
 A library to support the use of ANTLRv4 grammars for custom languages in IntelliJ-based IDEs plug-in development.
 
@@ -24,6 +24,16 @@ repositories {
 dependencies {
     compile "org.antlr:antlr4-intellij-adaptor:0.1"
 }
+```
+
+In Maven builds, use:
+
+```xml
+<dependency>
+  <groupId>org.antlr</groupId>
+  <artifactId>antlr4-intellij-adaptor</artifactId>
+  <version>0.1</version>
+</dependency>
 ```
 
 ## Examples
