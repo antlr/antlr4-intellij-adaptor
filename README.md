@@ -25,3 +25,18 @@ dependencies {
     compile "org.antlr:antlr4-intellij-adaptor:0.1"
 }
 ```
+
+## Examples
+
+Here is a list of known plugins that use the adaptor:
+
+* [ANTLRv4 grammar plugin](https://github.com/antlr/intellij-plugin-v4)
+* [Pebble plugin](https://plugins.jetbrains.com/plugin/9407-pebble)
+
+Other usages can be [found on GitHub](https://github.com/search?p=1&q=ANTLRParserAdaptor&type=Code)
+
+## Migration from the pre-Maven version
+
+Before 0.1, it was recommended to add this Git repo as a submodule of your own project, or to copy the source files directly.
+
+It is now recommended to use the Maven dependency. The main **breaking change** is that the base package has been renamed from `org.antlr.jetbrains.adaptor` to `org.antlr.intellij.adaptor`
