@@ -10,8 +10,6 @@ Collection<? extends PsiElement> allfuncs =
                   "/script/function/ID");
 ```
 
-I have made a sample plug-in that demonstrates the use of this library: [antlr/jetbrains-plugin-sample](https://github.com/antlr/jetbrains-plugin-sample).
-
 ## Using the library in your project
 
 The library is [published on Maven Central](https://search.maven.org/search?q=a:antlr4-intellij-adaptor) which means you can download the JAR and add it to your classpath manually, or pull the dependency automatically if you are using a Gradle build:
@@ -36,12 +34,15 @@ In Maven builds, use:
 </dependency>
 ```
 
+You can now head over to the [Getting started section](https://github.com/antlr/antlr4-intellij-adaptor/wiki/Getting-started) of the wiki.
+
 ## Examples
 
 Here is a list of known plugins that use the adaptor:
 
+* [Sample IntelliJ plugin](https://github.com/antlr/jetbrains-plugin-sample)
 * [ANTLRv4 grammar plugin](https://github.com/antlr/intellij-plugin-v4)
-* [Pebble plugin](https://plugins.jetbrains.com/plugin/9407-pebble)
+* [Pebble plugin](https://github.com/bjansen/pebble-intellij)
 
 Other usages can be [found on GitHub](https://github.com/search?p=1&q=ANTLRParserAdaptor&type=Code)
 
