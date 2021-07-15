@@ -55,3 +55,4 @@ YYYY/MM/DD, github id, Full name, email
 2016/02/23, yegorpetrov, Yegor Petrov, petrov.yegor@gmail.com
 2016/03/12, vemilyus, Alexander Katlein, mail@vemilyus.com
 2018/12/20, bjansen, Bastien Jansen, bastien.jansen@gmx.com
+2021/07/15, matozoid, Danny van Bruggen, hexagonaal@gmail.com
