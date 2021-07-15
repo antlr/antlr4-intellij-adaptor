@@ -7,19 +7,25 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** Traps errors from parsing language of plugin. E.g., for a Java plugin,
  *  this would catch errors when people type invalid Java code into .java file.
  *  This swallows the errors as the PSI tree has error nodes.
  */
 public class SyntaxErrorListener extends BaseErrorListener {
-	private final List<SyntaxError> syntaxErrors = new ArrayList<SyntaxError>();
+	private final Map<RecognitionException, SyntaxError> syntaxErrors = new HashMap<>();
 
 	public SyntaxErrorListener() {
 	}
 
 	public List<SyntaxError> getSyntaxErrors() {
+		return new ArrayList<>(syntaxErrors.values());
+	}
+
+	Map<RecognitionException, SyntaxError> getErrorMap() {
 		return syntaxErrors;
 	}
 
@@ -29,11 +35,11 @@ public class SyntaxErrorListener extends BaseErrorListener {
 							int line, int charPositionInLine,
 							String msg, RecognitionException e)
 	{
-		syntaxErrors.add(new SyntaxError(recognizer, (Token)offendingSymbol, line, charPositionInLine, msg, e));
+		syntaxErrors.put(e, new SyntaxError(recognizer, (Token) offendingSymbol, line, charPositionInLine, msg, e));
 	}
 
 	@Override
 	public String toString() {
-		return Utils.join(syntaxErrors.iterator(), "\n");
+		return Utils.join(syntaxErrors.values().iterator(), "\n");
 	}
 }
