@@ -44,8 +44,6 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.xpath.XPathLexer;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
