@@ -31,8 +31,6 @@
 package org.antlr.intellij.adaptor.psi;
 
 import com.intellij.lang.Language;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
@@ -56,6 +54,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.intellij.openapi.command.WriteCommandAction.runWriteCommandAction;
 
 public class Trees {
 	public interface Predicate<T> {
@@ -226,14 +226,10 @@ public class Trees {
 	public static void replacePsiFileFromText(final Project project, Language language, final PsiFile psiFile, String text) {
 		final PsiFile newPsiFile = createFile(project, language, text);
 		if ( newPsiFile==null ) return;
-		WriteCommandAction setTextAction = new WriteCommandAction(project) {
-			@Override
-			protected void run(@NotNull Result result) throws Throwable {
-				psiFile.deleteChildRange(psiFile.getFirstChild(), psiFile.getLastChild());
-				psiFile.addRange(newPsiFile.getFirstChild(), newPsiFile.getLastChild());
-			}
-		};
-		setTextAction.execute();
+		runWriteCommandAction(project, () -> {
+			psiFile.deleteChildRange(psiFile.getFirstChild(), psiFile.getLastChild());
+			psiFile.addRange(newPsiFile.getFirstChild(), newPsiFile.getLastChild());
+		});
 	}
 
 	public static PsiFile createFile(Project project, Language language, String text) {
