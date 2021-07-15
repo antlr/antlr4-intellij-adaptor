@@ -65,7 +65,7 @@ public class ANTLRLexerAdaptor extends com.intellij.lexer.LexerBase {
 	 * index tracked by IntelliJ. This field provides for an
 	 * efficient implementation of {@link #getState}.
 	 */
-	private final Map<ANTLRLexerState, Integer> stateCacheMap = new HashMap<ANTLRLexerState, Integer>();
+	private final Map<ANTLRLexerState, Integer> stateCacheMap = new HashMap<>();
 
 	/**
 	 * Provides a map from a state index tracked by IntelliJ
@@ -73,7 +73,7 @@ public class ANTLRLexerAdaptor extends com.intellij.lexer.LexerBase {
 	 * state. This field provides for an efficient implementation
 	 * of {@link #toLexerState}.
 	 */
-	private final List<ANTLRLexerState> stateCache = new ArrayList<ANTLRLexerState>();
+	private final List<ANTLRLexerState> stateCache = new ArrayList<>();
 
 	/**
 	 * Caches the {@code buffer} provided in the call to {@link
