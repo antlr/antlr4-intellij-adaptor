@@ -40,7 +40,11 @@ import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.intellij.adaptor.lexer.RuleIElementType;
 import org.antlr.intellij.adaptor.lexer.TokenIElementType;
 import org.antlr.intellij.adaptor.psi.Trees;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.LexerNoViableAltException;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.xpath.XPathLexer;
 import org.jetbrains.annotations.NotNull;
 
