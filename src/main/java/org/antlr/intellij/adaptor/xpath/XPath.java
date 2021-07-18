@@ -40,15 +40,14 @@ import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.intellij.adaptor.lexer.RuleIElementType;
 import org.antlr.intellij.adaptor.lexer.TokenIElementType;
 import org.antlr.intellij.adaptor.psi.Trees;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.LexerNoViableAltException;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.xpath.XPathLexer;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,13 +120,7 @@ public class XPath {
 	// TODO: check for invalid token/rule names, bad syntax
 
 	public XPathElement[] split(String path) {
-		ANTLRInputStream in;
-		try {
-			in = new ANTLRInputStream(new StringReader(path));
-		}
-		catch (IOException ioe) {
-			throw new IllegalArgumentException("Could not read path: "+path, ioe);
-		}
+		CharStream in = CharStreams.fromString(path);
 		XPathLexer lexer = new XPathLexer(in) {
 			public void recover(LexerNoViableAltException e) { throw e;	}
 		};
