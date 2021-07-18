@@ -226,7 +226,7 @@ public class Trees {
 	public static void replacePsiFileFromText(final Project project, Language language, final PsiFile psiFile, String text) {
 		final PsiFile newPsiFile = createFile(project, language, text);
 		if ( newPsiFile==null ) return;
-		WriteCommandAction setTextAction = new WriteCommandAction(project) {
+		WriteCommandAction<Void> setTextAction = new WriteCommandAction<Void>(project) {
 			@Override
 			protected void run(@NotNull Result result) throws Throwable {
 				psiFile.deleteChildRange(psiFile.getFirstChild(), psiFile.getLastChild());

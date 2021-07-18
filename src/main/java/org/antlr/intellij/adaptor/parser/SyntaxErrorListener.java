@@ -14,7 +14,7 @@ import java.util.List;
  *  This swallows the errors as the PSI tree has error nodes.
  */
 public class SyntaxErrorListener extends BaseErrorListener {
-	private final List<SyntaxError> syntaxErrors = new ArrayList<SyntaxError>();
+	private final List<SyntaxError> syntaxErrors = new ArrayList<>();
 
 	public SyntaxErrorListener() {
 	}

@@ -138,7 +138,7 @@ public class XPath {
 
 		List<Token> tokens = tokenStream.getTokens();
 //		System.out.println("path="+path+"=>"+tokens);
-		List<XPathElement> elements = new ArrayList<XPathElement>();
+		List<XPathElement> elements = new ArrayList<>();
 		int n = tokens.size();
 		int i=0;
 loop:

@@ -34,37 +34,16 @@ public class PSIElementTypeFactory {
 	                                               String[] ruleNames)
 	{
 		synchronized (PSIElementTypeFactory.class) {
-			if ( tokenIElementTypesCache.get(language)==null ) {
-				List<TokenIElementType> types = tokenIElementTypesCache.get(language);
-				if ( types==null ) {
-					types = createTokenIElementTypes(language, tokenNames);
-					tokenIElementTypesCache.put(language, types);
-				}
-			}
-			if ( ruleIElementTypesCache.get(language)==null ) {
-				List<RuleIElementType> result = ruleIElementTypesCache.get(language);
-				if ( result==null ) {
-					result = createRuleIElementTypes(language, ruleNames);
-					ruleIElementTypesCache.put(language, result);
-				}
-			}
-			if ( tokenNamesCache.get(language)==null ) {
-				tokenNamesCache.put(language, createTokenTypeMap(tokenNames));
-			}
-			if ( ruleNamesCache.get(language)==null ) {
-				ruleNamesCache.put(language, createRuleIndexMap(ruleNames));
-			}
+			tokenIElementTypesCache.computeIfAbsent(language, l -> createTokenIElementTypes(l, tokenNames));
+			ruleIElementTypesCache.computeIfAbsent(language, l -> createRuleIElementTypes(l, ruleNames));
+			tokenNamesCache.computeIfAbsent(language, l -> createTokenTypeMap(tokenNames));
+			ruleNamesCache.computeIfAbsent(language, l -> createRuleIndexMap(ruleNames));
 		}
 	}
 
 	public static TokenIElementType getEofElementType(Language language) {
-		TokenIElementType result = eofIElementTypesCache.get(language);
-		if (result == null) {
-			result = new TokenIElementType(Token.EOF, "EOF", language);
-			eofIElementTypesCache.put(language, result);
-		}
-
-		return result;
+		return eofIElementTypesCache.computeIfAbsent(language,
+				l -> new TokenIElementType(Token.EOF, "EOF", l));
 	}
 
 	public static List<TokenIElementType> getTokenIElementTypes(Language language) {
