@@ -6,6 +6,7 @@ import com.intellij.openapi.progress.ProgressIndicatorProvider;
 import org.antlr.intellij.adaptor.lexer.PSIElementTypeFactory;
 import org.antlr.intellij.adaptor.lexer.RuleIElementType;
 import org.antlr.intellij.adaptor.lexer.TokenIElementType;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -30,7 +31,7 @@ import java.util.Map;
 public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	protected final Language language;
 	protected final PsiBuilder builder;
-	protected List<SyntaxError> syntaxErrors;
+	protected Map<RecognitionException, SyntaxError> syntaxErrors;
 	protected final Deque<PsiBuilder.Marker> markers = new ArrayDeque<>();
 
 	protected final List<TokenIElementType> tokenElementTypes;
@@ -48,8 +49,8 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 
 		for (ANTLRErrorListener listener : parser.getErrorListeners()) {
 			if (listener instanceof SyntaxErrorListener) {
-				syntaxErrors = ((SyntaxErrorListener)listener).getSyntaxErrors();
-				for (SyntaxError error : syntaxErrors) {
+				syntaxErrors = ((SyntaxErrorListener) listener).getErrorMap();
+				for (SyntaxError error : syntaxErrors.values()) {
 					// record first error per token
 					int StartIndex = error.getOffendingSymbol().getStartIndex();
 					if ( !tokenToErrorMap.containsKey(StartIndex) ) {
@@ -115,6 +116,7 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	 *  prediction started (which we use to find syntax errors). So,
 	 *  SyntaxError objects return start not offending token in this case.
 	 */
+	@Override
 	public void visitErrorNode(ErrorNode node) {
 		ProgressIndicatorProvider.checkCanceled();
 
@@ -159,6 +161,15 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	public void exitEveryRule(ParserRuleContext ctx) {
 		ProgressIndicatorProvider.checkCanceled();
 		PsiBuilder.Marker marker = markers.pop();
-		marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
+		if (ctx.exception != null) {
+			SyntaxError error = syntaxErrors.get(ctx.exception);
+			if (error != null) {
+				marker.error(error.getMessage());
+			} else {
+				marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
+			}
+		} else {
+			marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
+		}
 	}
 }
