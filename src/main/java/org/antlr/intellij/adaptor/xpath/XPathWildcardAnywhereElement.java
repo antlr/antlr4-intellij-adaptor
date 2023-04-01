@@ -43,7 +43,7 @@ public class XPathWildcardAnywhereElement extends XPathElement {
 
 	@Override
 	public Collection<PsiElement> evaluate(PsiElement t) {
-		if ( invert ) return new ArrayList<PsiElement>(); // !* is weird but valid (empty)
+		if ( invert ) return new ArrayList<>(); // !* is weird but valid (empty)
 		return Trees.getDescendants(t);
 	}
 }

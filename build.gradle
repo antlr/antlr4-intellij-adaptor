@@ -5,13 +5,13 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '0.3.12'
+    id 'org.jetbrains.intellij' version '1.13.3'
     id 'maven-publish'
     id 'signing'
 }
 
 wrapper {
-    gradleVersion = '4.10.2'
+    gradleVersion = '8.0.2'
 }
 
 group 'org.antlr'
@@ -26,11 +26,11 @@ compileJava {
 }
 
 intellij {
-    version = ideaVersion
+    version.set(ideaVersion)
 
-    pluginName 'antlr4-intellij-adaptor'
-    downloadSources true
-    updateSinceUntilBuild false
+    pluginName.set('antlr4-intellij-adaptor')
+    downloadSources.set(true)
+    updateSinceUntilBuild.set(false)
 }
 
 repositories {
@@ -38,19 +38,19 @@ repositories {
 }
 
 dependencies {
-    compile("org.antlr:antlr4-runtime:$antlr4Version") {
+    implementation("org.antlr:antlr4-runtime:$antlr4Version") {
         exclude group:'com.ibm.icu', module:'icu4j'
     }
 }
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
-    classifier = 'sources'
+    archiveClassifier.set('sources')
 }
 
 task javadocJar(type: Jar) {
     from javadoc
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
 }
 
 publishing {

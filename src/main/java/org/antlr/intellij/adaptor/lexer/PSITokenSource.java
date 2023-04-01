@@ -22,7 +22,7 @@ import org.antlr.v4.runtime.misc.Pair;
  */
 public class PSITokenSource implements TokenSource {
 	protected PsiBuilder builder;
-	protected TokenFactory tokenFactory = CommonTokenFactory.DEFAULT;
+	protected TokenFactory<?> tokenFactory = CommonTokenFactory.DEFAULT;
 
 	public PSITokenSource(PsiBuilder builder) {
 		this.builder = builder;
@@ -52,7 +52,7 @@ public class PSITokenSource implements TokenSource {
 		int type = ideaTType!=null ? ideaTType.getANTLRTokenType() : Token.EOF;
 
 		int channel = Token.DEFAULT_CHANNEL;
-		Pair<TokenSource, CharStream> source = new Pair<TokenSource, CharStream>(this, null);
+		Pair<TokenSource, CharStream> source = new Pair<>(this, null);
 		String text = builder.getTokenText();
 		int start = builder.getCurrentOffset();
 		int length = text != null ? text.length() : 0;

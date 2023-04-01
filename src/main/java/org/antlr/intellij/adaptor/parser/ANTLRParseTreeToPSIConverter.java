@@ -32,7 +32,7 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 	protected final Language language;
 	protected final PsiBuilder builder;
 	protected Map<RecognitionException, SyntaxError> syntaxErrors;
-	protected final Deque<PsiBuilder.Marker> markers = new ArrayDeque<PsiBuilder.Marker>();
+	protected final Deque<PsiBuilder.Marker> markers = new ArrayDeque<>();
 
 	protected final List<TokenIElementType> tokenElementTypes;
 	protected final List<RuleIElementType> ruleElementTypes;

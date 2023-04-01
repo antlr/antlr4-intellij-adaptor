@@ -44,7 +44,7 @@ public class XPathWildcardElement extends XPathElement {
 	@Override
 	public Collection<PsiElement> evaluate(final PsiElement t) {
 		if ( invert ) return new ArrayList<>(); // !* is weird but valid (empty)
-		List<PsiElement> kids = new ArrayList<PsiElement>();
+		List<PsiElement> kids = new ArrayList<>();
 		for (PsiElement c : t.getChildren()) {
 			kids.add(c);
 		}

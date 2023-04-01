@@ -4,6 +4,7 @@ import com.intellij.lang.Language;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.Utils;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
+
+import static java.util.function.Function.*;
+import static java.util.stream.Collectors.*;
 
 /** The factory that automatically maps all tokens and rule names into
  *  IElementType objects: {@link TokenIElementType} and {@link RuleIElementType}.
@@ -29,42 +34,19 @@ public class PSIElementTypeFactory {
 	private PSIElementTypeFactory() {
 	}
 
-	public static void defineLanguageIElementTypes(Language language,
-	                                               String[] tokenNames,
-	                                               String[] ruleNames)
+	public static void defineLanguageIElementTypes(Language language, Vocabulary vocabulary, String[] ruleNames)
 	{
 		synchronized (PSIElementTypeFactory.class) {
-			if ( tokenIElementTypesCache.get(language)==null ) {
-				List<TokenIElementType> types = tokenIElementTypesCache.get(language);
-				if ( types==null ) {
-					types = createTokenIElementTypes(language, tokenNames);
-					tokenIElementTypesCache.put(language, types);
-				}
-			}
-			if ( ruleIElementTypesCache.get(language)==null ) {
-				List<RuleIElementType> result = ruleIElementTypesCache.get(language);
-				if ( result==null ) {
-					result = createRuleIElementTypes(language, ruleNames);
-					ruleIElementTypesCache.put(language, result);
-				}
-			}
-			if ( tokenNamesCache.get(language)==null ) {
-				tokenNamesCache.put(language, createTokenTypeMap(tokenNames));
-			}
-			if ( ruleNamesCache.get(language)==null ) {
-				ruleNamesCache.put(language, createRuleIndexMap(ruleNames));
-			}
+			tokenIElementTypesCache.computeIfAbsent(language, l -> createTokenIElementTypes(l, vocabulary));
+			ruleIElementTypesCache.computeIfAbsent(language, l -> createRuleIElementTypes(l, ruleNames));
+			tokenNamesCache.computeIfAbsent(language, l -> createTokenTypeMap(vocabulary));
+			ruleNamesCache.computeIfAbsent(language, l -> createRuleIndexMap(ruleNames));
 		}
 	}
 
 	public static TokenIElementType getEofElementType(Language language) {
-		TokenIElementType result = eofIElementTypesCache.get(language);
-		if (result == null) {
-			result = new TokenIElementType(Token.EOF, "EOF", language);
-			eofIElementTypesCache.put(language, result);
-		}
-
-		return result;
+		return eofIElementTypesCache.computeIfAbsent(language,
+				l -> new TokenIElementType(Token.EOF, "EOF", l));
 	}
 
 	public static List<TokenIElementType> getTokenIElementTypes(Language language) {
@@ -84,8 +66,9 @@ public class PSIElementTypeFactory {
 	}
 
 	/** Get a map from token names to token types. */
-	public static Map<String, Integer> createTokenTypeMap(String[] tokenNames) {
-		return Utils.toMap(tokenNames);
+	public static Map<String, Integer> createTokenTypeMap(Vocabulary vocabulary) {
+		return IntStream.rangeClosed(0, vocabulary.getMaxTokenType()).boxed()
+				.collect(toMap(vocabulary::getDisplayName, identity()));
 	}
 
 	/** Get a map from rule names to rule indexes. */
@@ -94,17 +77,10 @@ public class PSIElementTypeFactory {
 	}
 
 	@NotNull
-	public static List<TokenIElementType> createTokenIElementTypes(Language language, String[] tokenNames) {
-		List<TokenIElementType> result;
-		TokenIElementType[] elementTypes = new TokenIElementType[tokenNames.length];
-		for (int i = 0; i < tokenNames.length; i++) {
-			if ( tokenNames[i]!=null ) {
-				elementTypes[i] = new TokenIElementType(i, tokenNames[i], language);
-			}
-		}
-
-		result = Collections.unmodifiableList(Arrays.asList(elementTypes));
-		return result;
+	public static List<TokenIElementType> createTokenIElementTypes(Language language, Vocabulary vocabulary) {
+		return IntStream.rangeClosed(0, vocabulary.getMaxTokenType()).boxed()
+				.map(i -> new TokenIElementType(i, vocabulary.getDisplayName(i), language))
+				.collect(toList());
 	}
 
 	@NotNull
