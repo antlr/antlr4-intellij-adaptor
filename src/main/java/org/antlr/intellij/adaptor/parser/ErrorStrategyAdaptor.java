@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.IntervalSet;
+import org.antlr.v4.runtime.tree.ErrorNode;
 
 /** Adapt ANTLR's DefaultErrorStrategy so that we add error nodes
  *  for EOF if reached at start of resync's consumeUntil().
@@ -16,7 +17,8 @@ public class ErrorStrategyAdaptor extends DefaultErrorStrategy {
 	protected void consumeUntil(Parser recognizer, IntervalSet set) {
 		Token o = recognizer.getCurrentToken();
 		if ( o.getType()==Token.EOF ) {
-			recognizer.getRuleContext().addErrorNode(o);
+			ErrorNode errorNode = recognizer.createErrorNode(recognizer.getRuleContext(), o);
+			recognizer.getRuleContext().addErrorNode(errorNode);
 		}
 		super.consumeUntil(recognizer, set);
 	}
