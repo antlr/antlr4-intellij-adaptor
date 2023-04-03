@@ -3,9 +3,10 @@ FILE
     PsiElement('start')('start ')
     PsiElement(ID)('X')
     PsiElement(';')(';\n    ')
-    PsiErrorElement:mismatched input 'end ' expecting {';', ','}
+    ANTLRPsiNode(usesList)
       PsiElement('uses')('uses ')
       PsiElement(ID)('ducks\n')
-    PsiElement('end')('end ')
+    PsiErrorElement:mismatched input 'end ' expecting {';', ','}
+      PsiElement('end')('end ')
     PsiElement(ID)('X')
     PsiElement(';')(';')
