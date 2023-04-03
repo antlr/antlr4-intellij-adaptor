@@ -36,16 +36,22 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 
 	protected final List<TokenIElementType> tokenElementTypes;
 	protected final List<RuleIElementType> ruleElementTypes;
+	private final IElementTypeMapper elementTypeMapper;
 
 	/** Map an error's start char index (usually start of a token) to the error object. */
 	protected Map<Integer, SyntaxError> tokenToErrorMap = new HashMap<>();
 
 	public ANTLRParseTreeToPSIConverter(Language language, Parser parser, PsiBuilder builder) {
+		this(language, parser, builder, new RuleIndexIElementTypeMapper(PSIElementTypeFactory.getRuleIElementTypes(language)));
+	}
+
+	public ANTLRParseTreeToPSIConverter(Language language, Parser parser, PsiBuilder builder, IElementTypeMapper elementTypeMapper) {
 		this.language = language;
 		this.builder = builder;
+		this.elementTypeMapper = elementTypeMapper;
 
 		this.tokenElementTypes = PSIElementTypeFactory.getTokenIElementTypes(language);
-		this.ruleElementTypes = PSIElementTypeFactory.getRuleIElementTypes(language);
+		this.ruleElementTypes = elementTypeMapper.getRuleElementTypes();
 
 		for (ANTLRErrorListener listener : parser.getErrorListeners()) {
 			if (listener instanceof SyntaxErrorListener) {
@@ -166,10 +172,10 @@ public class ANTLRParseTreeToPSIConverter implements ParseTreeListener {
 			if (error != null) {
 				marker.error(error.getMessage());
 			} else {
-				marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
+				marker.done(elementTypeMapper.toIElementType(ctx));
 			}
 		} else {
-			marker.done(getRuleElementTypes().get(ctx.getRuleIndex()));
+			marker.done(elementTypeMapper.toIElementType(ctx));
 		}
 	}
 }
