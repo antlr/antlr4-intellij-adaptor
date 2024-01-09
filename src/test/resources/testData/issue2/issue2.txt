@@ -1,0 +1,12 @@
+FILE
+  ANTLRPsiNode(block)
+    PsiElement('start')('start ')
+    PsiElement(ID)('X')
+    PsiElement(';')(';\n    ')
+    ANTLRPsiNode(usesList)
+      PsiElement('uses')('uses ')
+      PsiElement(ID)('ducks\n')
+    PsiErrorElement:mismatched input 'end ' expecting {';', ','}
+      PsiElement('end')('end ')
+    PsiElement(ID)('X')
+    PsiElement(';')(';')

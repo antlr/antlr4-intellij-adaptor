@@ -8,6 +8,7 @@ plugins {
     id 'org.jetbrains.intellij' version '1.16.1'
     id 'maven-publish'
     id 'signing'
+    id 'antlr'
 }
 
 wrapper {
@@ -41,11 +42,13 @@ dependencies {
     implementation("org.antlr:antlr4-runtime:$antlr4Version") {
         exclude group:'com.ibm.icu', module:'icu4j'
     }
+    antlr "org.antlr:antlr4:$antlr4Version"
 }
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
     archiveClassifier.set('sources')
+    dependsOn(':generateGrammarSource')
 }
 
 task javadocJar(type: Jar) {
