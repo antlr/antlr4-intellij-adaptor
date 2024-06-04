@@ -277,6 +277,11 @@ public class ANTLRLexerAdaptor extends com.intellij.lexer.LexerBase {
 	 * @return The {@code ANTLRLexerState} instance corresponding to the specified state.
 	 */
 	protected ANTLRLexerState toLexerState(int state) {
-		return stateCache.get(state);
+		if (state < stateCache.size()) {
+			return stateCache.get(state);
+		}
+
+		// Can happen in injected languages when startOffset != zero and initialState == zero
+		return getInitialState();
 	}
 }
