@@ -97,8 +97,8 @@ publishing {
         maven {
             url "https://oss.sonatype.org/${libraryVersion.contains("-SNAPSHOT") ? 'content/repositories/snapshots' : 'service/local/staging/deploy/maven2'}"
             credentials {
-                username sonatypeUsername
-                password sonatypePassword
+		username = findProperty("ossrhToken") as String
+		password = findProperty("ossrhTokenPassword") as String
             }
         }
     }
