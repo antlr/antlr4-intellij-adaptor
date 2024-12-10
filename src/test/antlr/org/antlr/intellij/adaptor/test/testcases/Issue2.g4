@@ -1,7 +1,7 @@
 grammar Issue2;
 
 @header {
-package org.antlr.intellij.adaptor.issue2;
+package org.antlr.intellij.adaptor.test.testcases;
 }
 
 block
