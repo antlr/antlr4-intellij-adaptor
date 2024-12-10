@@ -1,9 +1,6 @@
 name: Release CI
 
-on:
-  release:
-    types:
-      - published
+on: [ push, pull_request ]
 
 jobs:
   build:
@@ -30,4 +27,4 @@ jobs:
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-        run: ./gradlew publish -PossrhToken="${SONATYPE_USERNAME}" -PossrhTokenPassword="${SONATYPE_PASSWORD}" -PsigningKey="${SIGNING_KEY}" -PsigningPassword="${SIGNING_PASSWORD}" -PideaVersion=IC-2020.3 -PlibraryVersion=$GITHUB_REF_NAME
+        run: ./gradlew publish -PossrhToken="${SONATYPE_USERNAME}" -PossrhTokenPassword="${SONATYPE_PASSWORD}" -PsigningKey="${SIGNING_KEY}" -PsigningPassword="" -PideaVersion=IC-2020.3 -PlibraryVersion=$GITHUB_REF_NAME
