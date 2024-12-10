@@ -22,7 +22,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
-          ./gradlew -PideaVersion=${IDEA_VERSION} check buildPlugin
+          ./gradlew -PideaVersion=${IDEA_VERSION} check buildPlugin -PlibraryVersion=$GITHUB_REF_NAME
         env:
           IDEA_VERSION: IC-2020.3
 
@@ -32,4 +32,4 @@ jobs:
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-        run: ./gradlew publish -PossrhToken="${SONATYPE_USERNAME}" -PossrhTokenPassword="${SONATYPE_PASSWORD}" -PsigningKey="${SIGNING_KEY}" -PsigningPassword="${SIGNING_PASSWORD}" -DlibraryVersion=$GITHUB_REF_NAME
+        run: ./gradlew publish -PossrhToken="${SONATYPE_USERNAME}" -PossrhTokenPassword="${SONATYPE_PASSWORD}" -PsigningKey="${SIGNING_KEY}" -PsigningPassword="${SIGNING_PASSWORD}" -PlibraryVersion=$GITHUB_REF_NAME
