@@ -27,10 +27,11 @@ public abstract class TestLanguage extends Language{
 	public static TestLanguage synthesizeTestLanguage(@NotNull String lang){
 		// Create a subclass of TestLanguage...
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		long l = System.currentTimeMillis();
 		writer.visit(
 				Opcodes.V1_8,
 				Opcodes.ACC_SUPER | Opcodes.ACC_PUBLIC,
-				"org/antlr/intellij/adaptor/test/$Lang" + lang,
+				"org/antlr/intellij/adaptor/test/$Lang" + lang + "@" + l,
 				"",
 				"org/antlr/intellij/adaptor/test/TestLanguage",
 				new String[0]
@@ -41,7 +42,7 @@ public abstract class TestLanguage extends Language{
 		ctor.visitCode();
 		// ...that invokes the super constructor with itself and the language name...
 		ctor.visitVarInsn(Opcodes.ALOAD, 0);
-		ctor.visitLdcInsn(lang);
+		ctor.visitLdcInsn(lang + "@" + l);
 		ctor.visitMethodInsn(Opcodes.INVOKESPECIAL, "org/antlr/intellij/adaptor/test/TestLanguage", "<init>", "(Ljava/lang/String;)V", false);
 		ctor.visitInsn(Opcodes.RETURN);
 		ctor.visitMaxs(0, 0);

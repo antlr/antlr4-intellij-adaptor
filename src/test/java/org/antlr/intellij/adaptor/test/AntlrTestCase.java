@@ -16,7 +16,8 @@ public class AntlrTestCase extends ParsingTestCase{
 	@Parameterized.Parameters(name = "{index}: {2} for {0}/{1}")
 	public static Iterable<Object> parameters(){
 		return Arrays.asList((Object[]) new Object[][]{
-				{ "Issue2", "block", "issue2" }
+				{ "Issue2", "block", "issue2" },
+				{ "Issue2", "block", "straightforward" }
 		});
 	}
 	

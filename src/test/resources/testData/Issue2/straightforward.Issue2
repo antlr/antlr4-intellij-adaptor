@@ -1,0 +1,3 @@
+start X;
+	uses Nothing;
+end X;
