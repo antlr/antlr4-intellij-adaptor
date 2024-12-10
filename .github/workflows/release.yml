@@ -24,7 +24,7 @@ jobs:
         run: |
           ./gradlew -PideaVersion=${IDEA_VERSION} check buildPlugin
         env:
-          - IDEA_VERSION: IC-2020.3
+          IDEA_VERSION: IC-2020.3
 
       - name: Publish to Sonatype
         env:
