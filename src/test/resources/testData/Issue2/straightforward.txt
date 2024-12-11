@@ -1,0 +1,12 @@
+FILE
+  ANTLRPsiNode(block)
+    PsiElement('start')('start ')
+    PsiElement(ID)('X')
+    PsiElement(';')(';\n\t')
+    ANTLRPsiNode(usesList)
+      PsiElement('uses')('uses ')
+      PsiElement(ID)('Nothing')
+      PsiElement(';')(';\n')
+    PsiElement('end')('end ')
+    PsiElement(ID)('X')
+    PsiElement(';')(';')
