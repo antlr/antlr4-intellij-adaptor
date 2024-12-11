@@ -9,6 +9,8 @@ import org.jetbrains.org.objectweb.asm.Opcodes;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A generic class for testing languages. Note that multiple instances of a language class cannot be used
@@ -21,17 +23,22 @@ public abstract class TestLanguage extends Language{
 		super(lang);
 	}
 	
+	private static final Map<String, TestLanguage> languageCache = new HashMap<>();
+	
 	/**
 	 * Generates a new subclass of {@linkplain TestLanguage}, and returns the canonical instance.
 	 */
 	public static TestLanguage synthesizeTestLanguage(@NotNull String lang){
+		if(languageCache.containsKey(lang))
+			return languageCache.get(lang);
+		
 		// Create a subclass of TestLanguage...
 		ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 		long l = System.currentTimeMillis();
 		writer.visit(
 				Opcodes.V1_8,
 				Opcodes.ACC_SUPER | Opcodes.ACC_PUBLIC,
-				"org/antlr/intellij/adaptor/test/$Lang" + lang + "@" + l,
+				"org/antlr/intellij/adaptor/test/$Lang" + lang,
 				"",
 				"org/antlr/intellij/adaptor/test/TestLanguage",
 				new String[0]
@@ -42,7 +49,7 @@ public abstract class TestLanguage extends Language{
 		ctor.visitCode();
 		// ...that invokes the super constructor with itself and the language name...
 		ctor.visitVarInsn(Opcodes.ALOAD, 0);
-		ctor.visitLdcInsn(lang + "@" + l);
+		ctor.visitLdcInsn(lang);
 		ctor.visitMethodInsn(Opcodes.INVOKESPECIAL, "org/antlr/intellij/adaptor/test/TestLanguage", "<init>", "(Ljava/lang/String;)V", false);
 		ctor.visitInsn(Opcodes.RETURN);
 		ctor.visitMaxs(0, 0);
@@ -52,7 +59,9 @@ public abstract class TestLanguage extends Language{
 		try{
 			// ...then define this class and return one instance.
 			Class<?> cls = MethodHandles.lookup().defineClass(writer.toByteArray());
-			return (TestLanguage)cls.getConstructor().newInstance();
+			TestLanguage language = (TestLanguage)cls.getConstructor().newInstance();
+			languageCache.put(lang, language);
+			return language;
 		}catch(IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException e){
 			throw new RuntimeException(e);
 		}
